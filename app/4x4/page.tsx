@@ -29,11 +29,6 @@ export default function FourByFourPage() {
         { label: "Engine", value: "4.0L V8 · 585 hp · 850 Nm · +20 hp hybrid" },
         { label: "Chassis", value: "Ladder frame · 3 locks · low range" },
       ]}
-      gallery={[
-        { src: "/images/g63-front.jpg", alt: "Mercedes-AMG G 63, front" },
-        { src: "/images/g63-black.jpg", alt: "Black Mercedes-AMG G 63" },
-        { src: "/images/g63-rear.jpg", alt: "Mercedes-AMG G 63, rear" },
-      ]}
       buying={[
         "The price in Douala is 156 773 723 FCFA for reference 3284. The written quote states what that includes. Insurance and registration are agreed before you pay.",
         "Mercedes-Benz rates this G 63 on Super Plus. Combined consumption on the published cycle is about 14.7 l/100 km. Douala traffic will use more. Regular petrol is the wrong fuel.",

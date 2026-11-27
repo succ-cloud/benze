@@ -31,7 +31,7 @@ export function VehicleDetail({
   }, { dependencies: [index, vehicle.slug] });
 
   const guide = guideFor(vehicle.slug);
-  const photos = guide?.pageImages ?? vehicle.images;
+  const photos = [(guide?.pageImages ?? vehicle.images)[0]].filter(Boolean);
   const image = photos[index] ?? photos[0];
 
   const quote = () => {
@@ -93,22 +93,27 @@ export function VehicleDetail({
           {guide?.imageNote && (
             <p className="mt-4 max-w-2xl text-sm leading-6 text-[#5c5e62]">{guide.imageNote}</p>
           )}
-          <dl className="mt-8 divide-y divide-neutral-200 border-y border-neutral-200">
+          <dl className="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-2xl bg-[#e7e7e7] sm:grid-cols-2">
             {vehicle.specs.map((spec) => (
-              <div key={spec.label} className="grid grid-cols-2 gap-4 py-3 text-sm">
-                <dt className="text-[#5c5e62]">{spec.label}</dt>
-                <dd className="font-medium">{spec.value}</dd>
+              <div key={spec.label} className="bg-white px-5 py-4">
+                <dt className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#5c5e62]">{spec.label}</dt>
+                <dd className="mt-1 text-[15px] font-medium leading-snug tracking-[-0.015em]">{spec.value}</dd>
               </div>
             ))}
           </dl>
           {guide && (
-            <div className="mt-10 max-w-2xl">
-              <h2 className="text-2xl font-medium">Before you buy</h2>
-              <ul className="mt-4 space-y-3 text-[15px] leading-7 text-[#393c41]">
-                {guide.know.map((item) => (
-                  <li key={item}>{item}</li>
+            <div className="mt-10">
+              <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#5c5e62]">Before you buy</p>
+              <ol className="mt-4 grid gap-px overflow-hidden rounded-2xl bg-[#e7e7e7] sm:grid-cols-2">
+                {guide.know.map((item, itemIndex) => (
+                  <li key={item} className="bg-white px-5 py-5">
+                    <span className="text-[11px] font-medium tracking-[0.16em] text-[#5c5e62]">
+                      {String(itemIndex + 1).padStart(2, "0")}
+                    </span>
+                    <p className="mt-2 text-[15px] font-normal leading-7 tracking-[-0.011em] text-[#393c41]">{item}</p>
+                  </li>
                 ))}
-              </ul>
+              </ol>
             </div>
           )}
         </div>

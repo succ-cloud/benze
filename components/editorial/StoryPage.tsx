@@ -78,73 +78,88 @@ export function StoryPage({
         </div>
       </section>
 
-      <section ref={copy} className="mx-auto max-w-6xl px-6 py-16">
-        <div className="mx-auto max-w-3xl space-y-4 text-[15px] leading-7 text-[#393c41]">
-          {paragraphs.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
+      <section ref={copy} className="mx-auto max-w-6xl px-6 py-20 font-sans">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-x-12">
+          <div className="lg:col-span-5">
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#5c5e62]">The line</p>
+            <div className="mt-4 space-y-4 text-[15px] font-normal leading-7 tracking-[-0.011em] text-[#393c41]">
+              {paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          </div>
+          {facts.length > 0 && (
+            <dl className="grid grid-cols-1 content-start gap-px self-start overflow-hidden rounded-2xl bg-[#e7e7e7] sm:grid-cols-2 lg:col-span-7 lg:grid-cols-1">
+              {facts.map((fact) => (
+                <div key={fact.label} data-story-card className="grid gap-1 bg-white px-5 py-5 sm:grid-cols-[9rem_1fr] sm:items-baseline sm:gap-6">
+                  <dt className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#5c5e62]">{fact.label}</dt>
+                  <dd className="text-[15px] font-medium leading-snug tracking-[-0.015em] text-[#171a20]">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
         </div>
 
-        {facts.length > 0 && (
-          <dl className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {facts.map((fact) => (
-              <div key={fact.label} data-story-card className="rounded-2xl bg-[#f4f4f4] px-5 py-4">
-                <dt className="text-sm text-[#5c5e62]">{fact.label}</dt>
-                <dd className="mt-1 text-lg font-medium leading-snug">{fact.value}</dd>
-              </div>
-            ))}
-          </dl>
-        )}
-
         {gallery.length > 0 && (
-          <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className={`mt-16 grid gap-4 ${gallery.length > 1 ? "sm:grid-cols-3" : "grid-cols-1"}`}>
             {gallery.map((shot) => (
               <figure key={shot.src} data-story-card className="overflow-hidden rounded-2xl bg-[#f4f4f4]">
-                <div className="relative h-56">
-                  <Image src={shot.src} alt={shot.alt} fill className="object-cover" sizes="33vw" />
+                <div className={`relative ${gallery.length > 1 ? "h-72" : "h-[28rem]"}`}>
+                  <Image src={shot.src} alt={shot.alt} fill className="object-cover" sizes={gallery.length > 1 ? "33vw" : "100vw"} />
                 </div>
-                <figcaption className="px-4 py-3 text-sm text-[#393c41]">{shot.alt}</figcaption>
+                <figcaption className="px-4 py-3 text-[13px] font-normal leading-5 tracking-[-0.011em] text-[#393c41]">{shot.alt}</figcaption>
               </figure>
             ))}
           </div>
         )}
 
-        <h2 className="mt-14 text-2xl font-medium">In this range</h2>
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {vehicles.map((vehicle) => {
-            const guide = guideFor(vehicle.slug);
-            const photo = guide?.pageImages?.[0] ?? vehicle.images[0];
-            return (
-              <Link
-                key={vehicle.slug}
-                href={`/vehicles/${vehicle.slug}`}
-                data-story-card
-                className="overflow-hidden rounded-2xl bg-[#f4f4f4]"
-              >
-                <div className="relative h-52">
-                  <Image src={photo} alt="" fill className="object-cover" sizes="33vw" />
-                </div>
-                <div className="p-4">
-                  <p className="text-lg font-medium">{vehicle.shortName}</p>
-                  <p className="text-sm text-[#5c5e62]">
-                    {vehicle.inStock ? "In stock in Douala" : "Out of stock"} · ref {vehicle.ref}
-                  </p>
-                  {vehicle.price != null && <p className="mt-1 text-sm">{formatFCFA(vehicle.price)}</p>}
-                  {guide?.imageNote && <p className="mt-2 text-xs leading-5 text-[#5c5e62]">{guide.imageNote}</p>}
-                </div>
-              </Link>
-            );
-          })}
+        <div className="mt-16">
+          <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#5c5e62]">In this range</p>
+          <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {vehicles.map((vehicle) => {
+              const guide = guideFor(vehicle.slug);
+              const photo = guide?.pageImages?.[0] ?? vehicle.images[0];
+              return (
+                <Link
+                  key={vehicle.slug}
+                  href={`/vehicles/${vehicle.slug}`}
+                  data-story-card
+                  className="overflow-hidden rounded-2xl bg-[#f4f4f4]"
+                >
+                  <div className="relative h-52">
+                    <Image src={photo} alt="" fill className="object-cover" sizes="33vw" />
+                  </div>
+                  <div className="p-4">
+                    <p className="text-[17px] font-medium tracking-[-0.02em]">{vehicle.shortName}</p>
+                    <p className="mt-1 text-[13px] font-normal tracking-[-0.011em] text-[#5c5e62]">
+                      {vehicle.inStock ? "In stock in Douala" : "Out of stock"} · ref {vehicle.ref}
+                    </p>
+                    {vehicle.price != null && (
+                      <p className="mt-2 text-[13px] font-medium tracking-[-0.011em]">{formatFCFA(vehicle.price)}</p>
+                    )}
+                    {guide?.imageNote && (
+                      <p className="mt-2 text-[12px] font-normal leading-5 tracking-[-0.011em] text-[#5c5e62]">{guide.imageNote}</p>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
         {buying.length > 0 && (
-          <div className="mx-auto mt-14 max-w-3xl">
-            <h2 className="text-2xl font-medium">Before you buy</h2>
-            <ul className="mt-4 space-y-3 text-[15px] leading-7 text-[#393c41]">
-              {buying.map((item) => (
-                <li key={item}>{item}</li>
+          <div className="mt-16">
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#5c5e62]">Before you buy</p>
+            <ol className="mt-5 grid gap-px overflow-hidden rounded-2xl bg-[#e7e7e7] sm:grid-cols-2">
+              {buying.map((item, itemIndex) => (
+                <li key={item} data-story-card className="bg-white px-5 py-5">
+                  <span className="text-[11px] font-medium tracking-[0.16em] text-[#5c5e62]">
+                    {String(itemIndex + 1).padStart(2, "0")}
+                  </span>
+                  <p className="mt-2 text-[15px] font-normal leading-7 tracking-[-0.011em] text-[#393c41]">{item}</p>
+                </li>
               ))}
-            </ul>
+            </ol>
           </div>
         )}
       </section>

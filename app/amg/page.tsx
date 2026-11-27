@@ -21,7 +21,7 @@ export default function AmgPage() {
       vehicles={vehicles.filter((vehicle) => vehicle.line === "amg")}
       paragraphs={[
         "Mercedes-AMG began in 1967 in Affalterbach. Hans Werner Aufrecht and Erhard Melcher built the workshop; the name is their initials plus Großaspach, Aufrecht’s birthplace. AMG engines are still assembled one at a time, and the builder signs the engine plate.",
-        "The cars in Douala are the GLE 63 S Coupé, the GLE 53, and the G 63. All three are mild-hybrid petrol, automatic, and left-hand drive. The photographs on this page are Mercedes-AMG cars: the GT, the G 63, and a GLE 63 S Coupé, including the AMG wheels.",
+        "The cars in Douala are the GLE 63 S Coupé, the GLE 53, and the G 63. All three are mild-hybrid petrol, automatic, and left-hand drive. The photographs are Mercedes-AMG GTs, including the grille, the plate, and the wheels.",
       ]}
       facts={[
         {
@@ -41,9 +41,6 @@ export default function AmgPage() {
         { src: "/images/amg-gt-red.jpg", alt: "Mercedes-AMG GT, with the AMG wheel and red caliper" },
         { src: "/images/amg-gt-front.jpg", alt: "Mercedes-AMG grille and AMG plate on an AMG GT" },
         { src: "/images/amg-gt-dark.jpg", alt: "Matte black Mercedes-AMG GT" },
-        { src: "/images/gle-coupe.jpg", alt: "Mercedes-AMG GLE 63 S Coupé, quad exhausts and AMG wheels" },
-        { src: "/images/g63-front.jpg", alt: "Mercedes-AMG G 63, front" },
-        { src: "/images/g63-black.jpg", alt: "Black Mercedes-AMG G 63" },
       ]}
       buying={[
         "Prices are the Douala showroom prices in FCFA. The written quote states what is included. Insurance and registration are settled before you pay, and they are not assumed to be inside the figure.",

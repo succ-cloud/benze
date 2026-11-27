@@ -29,11 +29,6 @@ export default function MaybachPage() {
         { label: "Engine", value: "4.0L V8 mild hybrid · 603 hp · 850 Nm" },
         { label: "Also listed", value: "GLS 600 and S 480 Maybach, both out of stock" },
       ]}
-      gallery={[
-        { src: "/images/gls-1-1.jpg", alt: "Mercedes-Maybach GLS, Maybach grille and lettering" },
-        { src: "/images/gls-1.jpg", alt: "Mercedes-Maybach GLS on the road" },
-        { src: "/images/sclass-1.jpg", alt: "Mercedes-Maybach S-Class, the sedan in the same line" },
-      ]}
       buying={[
         "The GLS 680 price in Douala is the showroom figure in FCFA. The written quote states what it includes. Insurance and registration are agreed separately.",
         "It takes premium unleaded. Confirm with the car whether the cabin is four seats or five, and which rear-seat options are actually fitted. Those change the car more than the badge does.",
