@@ -8,6 +8,7 @@ import type { Vehicle } from "@/data/vehicles";
 import { formatFCFA } from "@/lib/format";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { ButtonLink } from "@/components/ui/Button";
+import { tileDelay, tileMotion, tileStyle } from "@/components/ui/tiles";
 
 type Action = { label: string; href: string };
 type Fact = { label: string; value: string };
@@ -38,23 +39,11 @@ export function StoryPage({
   gallery?: Shot[];
   buying?: string[];
 }) {
-  const copy = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useGSAP(() => {
     gsap.from(titleRef.current, { y: 24, autoAlpha: 0, duration: 0.7, ease: "power3.out" });
   });
-
-  useGSAP(() => {
-    gsap.from("[data-story-card]", {
-      y: 24,
-      autoAlpha: 0,
-      duration: 0.6,
-      stagger: 0.08,
-      ease: "power2.out",
-      scrollTrigger: { trigger: copy.current, start: "top 80%" },
-    });
-  }, { scope: copy });
 
   return (
     <div className="bg-white">
@@ -78,43 +67,51 @@ export function StoryPage({
         </div>
       </section>
 
-      <section ref={copy} className="mx-auto max-w-6xl px-6 py-20 font-sans">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-x-12">
-          <div className="lg:col-span-5">
-            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#5c5e62]">The line</p>
-            <div className="mt-4 space-y-4 text-[15px] font-normal leading-7 tracking-[-0.011em] text-[#393c41]">
-              {paragraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
+      <section className="bg-[#171a20] font-sans text-white">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 py-16 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-12">
+          <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white lg:col-span-5">The line</p>
+          <div className="space-y-4 text-[15px] font-normal leading-7 tracking-[-0.011em] text-white lg:col-span-5 lg:row-start-2">
+            {paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </div>
           {facts.length > 0 && (
-            <dl className="grid grid-cols-1 content-start gap-px self-start overflow-hidden rounded-2xl bg-[#e7e7e7] sm:grid-cols-2 lg:col-span-7 lg:grid-cols-1">
-              {facts.map((fact) => (
-                <div key={fact.label} data-story-card className="grid gap-1 bg-white px-5 py-5 sm:grid-cols-[9rem_1fr] sm:items-baseline sm:gap-6">
-                  <dt className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#5c5e62]">{fact.label}</dt>
-                  <dd className="text-[15px] font-medium leading-snug tracking-[-0.015em] text-[#171a20]">{fact.value}</dd>
+            <dl
+              className="grid content-stretch gap-4 self-stretch sm:grid-cols-2 lg:col-span-7 lg:col-start-6 lg:row-start-2 lg:h-full lg:grid-cols-1"
+              style={{ gridTemplateRows: `repeat(${facts.length}, minmax(7.5rem, 1fr))` }}
+            >
+              {facts.map((fact, factIndex) => (
+                <div
+                  key={fact.label}
+                  data-story-card
+                  style={tileDelay(factIndex)}
+                  className="grid content-center gap-2 rounded-2xl border border-white bg-transparent px-8 py-8 tile-rise sm:grid-cols-[11rem_1fr] sm:items-center sm:gap-8"
+                >
+                  <dt className="text-[13px] font-medium uppercase tracking-[0.16em] text-white">{fact.label}</dt>
+                  <dd className="text-xl font-medium leading-snug tracking-[-0.02em] text-white">{fact.value}</dd>
                 </div>
               ))}
             </dl>
           )}
         </div>
+      </section>
 
+      <section className="mx-auto max-w-6xl px-6 py-20 font-sans">
         {gallery.length > 0 && (
           <div className={`mt-16 grid gap-4 ${gallery.length > 1 ? "sm:grid-cols-3" : "grid-cols-1"}`}>
-            {gallery.map((shot) => (
-              <figure key={shot.src} data-story-card className="overflow-hidden rounded-2xl bg-[#f4f4f4]">
-                <div className={`relative ${gallery.length > 1 ? "h-72" : "h-[28rem]"}`}>
-                  <Image src={shot.src} alt={shot.alt} fill className="object-cover" sizes={gallery.length > 1 ? "33vw" : "100vw"} />
+            {gallery.map((shot, shotIndex) => (
+              <figure key={shot.src} data-story-card className={`group overflow-hidden ${tileMotion}`} style={{ ...tileStyle(shotIndex), ...tileDelay(shotIndex) }}>
+                <div className={`relative overflow-hidden ${gallery.length > 1 ? "h-72" : "h-[28rem]"}`}>
+                  <Image src={shot.src} alt={shot.alt} fill className="object-cover transition duration-700 ease-out group-hover:scale-105" sizes={gallery.length > 1 ? "33vw" : "100vw"} />
                 </div>
-                <figcaption className="px-4 py-3 text-[13px] font-normal leading-5 tracking-[-0.011em] text-[#393c41]">{shot.alt}</figcaption>
+                <figcaption className="px-4 py-3 text-[13px] font-normal leading-5 tracking-[-0.011em]">{shot.alt}</figcaption>
               </figure>
             ))}
           </div>
         )}
 
-        <div className="mt-16">
-          <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#5c5e62]">In this range</p>
+        {vehicles.length > 0 && <div className="mt-16">
+          <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-tesla">In this range</p>
           <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {vehicles.map((vehicle) => {
               const guide = guideFor(vehicle.slug);
@@ -124,45 +121,49 @@ export function StoryPage({
                   key={vehicle.slug}
                   href={`/vehicles/${vehicle.slug}`}
                   data-story-card
-                  className="overflow-hidden rounded-2xl bg-[#f4f4f4]"
+                  style={{ ...tileStyle(vehicles.indexOf(vehicle) + 1), ...tileDelay(vehicles.indexOf(vehicle)) }}
+                  className={`block overflow-hidden ${tileMotion}`}
                 >
                   <div className="relative h-52">
                     <Image src={photo} alt="" fill className="object-cover" sizes="33vw" />
                   </div>
                   <div className="p-4">
-                    <p className="text-[17px] font-medium tracking-[-0.02em]">{vehicle.shortName}</p>
-                    <p className="mt-1 text-[13px] font-normal tracking-[-0.011em] text-[#5c5e62]">
+                    <p className="text-[17px] font-medium tracking-[-0.02em] text-tesla">{vehicle.shortName}</p>
+                    <p className="mt-1 text-[13px] font-normal tracking-[-0.011em] opacity-80">
                       {vehicle.inStock ? "In stock in Douala" : "Out of stock"} · ref {vehicle.ref}
                     </p>
                     {vehicle.price != null && (
-                      <p className="mt-2 text-[13px] font-medium tracking-[-0.011em]">{formatFCFA(vehicle.price)}</p>
+                      <p className="mt-2 text-[13px] font-medium tracking-[-0.011em] text-tesla">{formatFCFA(vehicle.price)}</p>
                     )}
                     {guide?.imageNote && (
-                      <p className="mt-2 text-[12px] font-normal leading-5 tracking-[-0.011em] text-[#5c5e62]">{guide.imageNote}</p>
+                      <p className="mt-2 text-[12px] font-normal leading-5 tracking-[-0.011em] opacity-80">{guide.imageNote}</p>
                     )}
                   </div>
                 </Link>
               );
             })}
           </div>
-        </div>
+        </div>}
 
-        {buying.length > 0 && (
-          <div className="mt-16">
-            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#5c5e62]">Before you buy</p>
-            <ol className="mt-5 grid gap-px overflow-hidden rounded-2xl bg-[#e7e7e7] sm:grid-cols-2">
+      </section>
+
+      {buying.length > 0 && (
+        <section className="bg-[#171a20] font-sans text-white">
+          <div className="mx-auto max-w-6xl px-6 py-16">
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white">Before you buy</p>
+            <ol className="mt-5 grid gap-8 sm:grid-cols-2">
               {buying.map((item, itemIndex) => (
-                <li key={item} data-story-card className="bg-white px-5 py-5">
-                  <span className="text-[11px] font-medium tracking-[0.16em] text-[#5c5e62]">
+                <li key={item} style={tileDelay(itemIndex)} className="tile-rise">
+                  <span className="text-[11px] font-medium tracking-[0.16em] text-white">
                     {String(itemIndex + 1).padStart(2, "0")}
                   </span>
-                  <p className="mt-2 text-[15px] font-normal leading-7 tracking-[-0.011em] text-[#393c41]">{item}</p>
+                  <p className="mt-2 text-[15px] font-normal leading-7 tracking-[-0.011em] text-white">{item}</p>
                 </li>
               ))}
             </ol>
           </div>
-        )}
-      </section>
+        </section>
+      )}
     </div>
   );
 }

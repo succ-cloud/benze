@@ -10,6 +10,7 @@ import { formatFCFA, formatFromFCFA } from "@/lib/format";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useQuote } from "@/components/quote/QuoteProvider";
 import { ButtonLink } from "@/components/ui/Button";
+import { tileDelay, tileMotion, tileStyle } from "@/components/ui/tiles";
 
 export function VehicleDetail({
   vehicle,
@@ -81,11 +82,11 @@ export function VehicleDetail({
       <section className="mx-auto grid max-w-6xl gap-10 px-6 py-10 lg:grid-cols-[1.4fr_0.8fr]">
         <div>
           <p className="text-sm text-[#5c5e62]">ref : {vehicle.ref} · Mercedes</p>
-          <h2 className="mt-2 text-2xl font-medium">{vehicle.name}</h2>
+          <h2 className="mt-2 text-2xl font-medium text-tesla">{vehicle.name}</h2>
           <p className="mt-4 max-w-2xl text-base leading-7 text-[#393c41]">{vehicle.blurb}</p>
           <ul className="mt-6 grid gap-3 sm:grid-cols-3">
-            {vehicle.highlights.map((item) => (
-              <li key={item} className="rounded-xl bg-[#f4f4f4] px-4 py-3 text-sm font-medium">
+            {vehicle.highlights.map((item, itemIndex) => (
+              <li key={item} style={{ ...tileStyle(itemIndex), ...tileDelay(itemIndex) }} className={`px-4 py-3 text-sm font-medium text-tesla ${tileMotion}`}>
                 {item}
               </li>
             ))}
@@ -93,29 +94,14 @@ export function VehicleDetail({
           {guide?.imageNote && (
             <p className="mt-4 max-w-2xl text-sm leading-6 text-[#5c5e62]">{guide.imageNote}</p>
           )}
-          <dl className="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-2xl bg-[#e7e7e7] sm:grid-cols-2">
-            {vehicle.specs.map((spec) => (
-              <div key={spec.label} className="bg-white px-5 py-4">
-                <dt className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#5c5e62]">{spec.label}</dt>
+          <dl className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {vehicle.specs.map((spec, specIndex) => (
+              <div key={spec.label} style={{ ...tileStyle(specIndex), ...tileDelay(specIndex) }} className={`px-5 py-4 ${tileMotion}`}>
+                <dt className="text-[11px] font-medium uppercase tracking-[0.16em] text-tesla">{spec.label}</dt>
                 <dd className="mt-1 text-[15px] font-medium leading-snug tracking-[-0.015em]">{spec.value}</dd>
               </div>
             ))}
           </dl>
-          {guide && (
-            <div className="mt-10">
-              <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#5c5e62]">Before you buy</p>
-              <ol className="mt-4 grid gap-px overflow-hidden rounded-2xl bg-[#e7e7e7] sm:grid-cols-2">
-                {guide.know.map((item, itemIndex) => (
-                  <li key={item} className="bg-white px-5 py-5">
-                    <span className="text-[11px] font-medium tracking-[0.16em] text-[#5c5e62]">
-                      {String(itemIndex + 1).padStart(2, "0")}
-                    </span>
-                    <p className="mt-2 text-[15px] font-normal leading-7 tracking-[-0.011em] text-[#393c41]">{item}</p>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          )}
         </div>
 
         <aside className="h-fit rounded-2xl bg-[#f4f4f4] p-6 lg:sticky lg:top-20">
@@ -123,7 +109,7 @@ export function VehicleDetail({
           {vehicle.price != null ? (
             <>
               <p className="mt-3 text-xs uppercase tracking-wide text-[#5c5e62]">Price in Douala</p>
-              <p className="text-3xl font-medium">{formatFCFA(vehicle.price)}</p>
+              <p className="text-3xl font-medium text-tesla">{formatFCFA(vehicle.price)}</p>
             </>
           ) : (
             <p className="mt-3 text-2xl font-medium">Price on request</p>
@@ -148,9 +134,27 @@ export function VehicleDetail({
         </aside>
       </section>
 
+      {guide && (
+        <section className="bg-[#171a20] text-white">
+          <div className="mx-auto max-w-6xl px-6 py-16">
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white">Before you buy</p>
+            <ol className="mt-5 grid gap-8 sm:grid-cols-2">
+              {guide.know.map((item, itemIndex) => (
+                <li key={item} style={tileDelay(itemIndex)} className="tile-rise">
+                  <span className="text-[11px] font-medium tracking-[0.16em] text-white">
+                    {String(itemIndex + 1).padStart(2, "0")}
+                  </span>
+                  <p className="mt-2 text-[15px] font-normal leading-7 tracking-[-0.011em] text-white">{item}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
       {related.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 pb-16">
-          <h2 className="text-2xl font-medium">Also in the yard</h2>
+          <h2 className="text-2xl font-medium text-tesla">Also in the yard</h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
               <Link key={item.slug} href={`/vehicles/${item.slug}`} className="group overflow-hidden rounded-2xl bg-[#f4f4f4]">
@@ -158,7 +162,7 @@ export function VehicleDetail({
                   <Image src={guideFor(item.slug)?.pageImages?.[0] ?? item.images[0]} alt="" fill className="object-cover transition duration-500 group-hover:scale-105" sizes="33vw" />
                 </div>
                 <div className="p-4">
-                  <p className="font-medium">{item.shortName}</p>
+                  <p className="font-medium text-tesla">{item.shortName}</p>
                   {item.price != null && <p className="text-sm text-[#5c5e62]">{formatFCFA(item.price)}</p>}
                 </div>
               </Link>
