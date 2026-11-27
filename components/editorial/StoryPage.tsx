@@ -47,7 +47,7 @@ export function StoryPage({
 
   return (
     <div className="bg-white">
-      <section className="relative flex h-svh min-h-[640px] items-center justify-center overflow-hidden bg-[#111] text-center text-white">
+      <section className="relative flex h-svh min-h-[520px] items-center justify-center overflow-hidden bg-[#111] text-center text-white sm:min-h-[640px]">
         <Image src={image} alt={imageAlt} fill priority className="object-cover" sizes="100vw" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.4),transparent_60%)]" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-white/50 to-transparent" />

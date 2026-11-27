@@ -207,7 +207,7 @@ export function ShopCatalog() {
             min={0}
             value={min}
             onChange={(event) => setMin(Number(event.target.value))}
-            className="w-full rounded border border-neutral-300 px-2 py-2 text-sm"
+            className="min-w-0 w-full rounded border border-neutral-300 px-2 py-2 text-sm"
             aria-label="Minimum price"
           />
           <span className="text-neutral-400">—</span>
@@ -216,7 +216,7 @@ export function ShopCatalog() {
             min={0}
             value={max}
             onChange={(event) => setMax(Number(event.target.value))}
-            className="w-full rounded border border-neutral-300 px-2 py-2 text-sm"
+            className="min-w-0 w-full rounded border border-neutral-300 px-2 py-2 text-sm"
             aria-label="Maximum price"
           />
         </div>
@@ -312,7 +312,7 @@ export function ShopCatalog() {
           In-stock Mercedes-Benz SUVs and the G-Class at Spainzy of Douala, priced in FCFA for Cameroon.
         </p>
 
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="mt-5 flex w-full flex-wrap gap-2">
           {categoryOptions.map((option) => (
             <button
               key={option.id}
@@ -340,7 +340,7 @@ export function ShopCatalog() {
           )}
         </div>
 
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <button
               type="button"
@@ -358,12 +358,12 @@ export function ShopCatalog() {
               <span className="font-semibold">{inStock.length}</span> vehicles found
             </p>
           </div>
-          <label className="flex items-center gap-2 text-sm">
-            Sort by:
+          <label className="flex w-full items-center gap-2 text-sm sm:w-auto">
+            <span className="shrink-0">Sort by:</span>
             <select
               value={sort}
               onChange={(event) => setSort(event.target.value as "price-asc" | "price-desc")}
-              className="h-10 rounded border border-neutral-300 bg-white px-2"
+              className="h-10 min-w-0 flex-1 rounded border border-neutral-300 bg-white px-2 sm:flex-none"
             >
               <option value="price-asc">Price: low to high</option>
               <option value="price-desc">Price: high to low</option>
@@ -495,33 +495,61 @@ export function ShopCatalog() {
 }
 
 function VehicleCard({ vehicle, eager = false }: { vehicle: Vehicle; eager?: boolean }) {
+  const facts = [
+    { label: "Reference", value: vehicle.ref },
+    { label: "Make", value: "Mercedes" },
+    { label: "Engine", value: vehicle.engine },
+    { label: "Fuel", value: vehicle.fuelLabel },
+    { label: "Gearbox", value: vehicle.transmission },
+    { label: "Drive", value: vehicle.drive },
+    ...(vehicle.emission ? [{ label: "Emission", value: vehicle.emission }] : []),
+  ];
+
   return (
     <article data-vehicle-card className="flex h-full flex-col">
       <CardGallery vehicle={vehicle} eager={eager} />
       <div className="flex flex-1 flex-col pt-3">
-        <p className="text-xs text-[#5c5e62]">ref : {vehicle.ref}</p>
-        <p className="mt-1 text-sm text-[#393c41]">Mercedes</p>
-        <h3 className="mt-1 text-lg font-semibold leading-snug">
+        <p className="hidden text-xs text-[#5c5e62] sm:block">ref : {vehicle.ref}</p>
+        <p className="mt-1 hidden text-sm text-[#393c41] sm:block">Mercedes</p>
+        <h3 className="text-base font-semibold leading-snug sm:mt-1 sm:text-lg">
           <Link href={`/vehicles/${vehicle.slug}`} className="hover:underline">
             {vehicle.name}
           </Link>
         </h3>
-        <p className="mt-2 text-sm text-[#393c41]">
+        <dl className="mt-3 grid grid-cols-2 gap-2 sm:hidden">
+          {facts.map((fact) => (
+            <div key={fact.label} className="min-w-0 rounded-xl bg-[#f4f4f4] px-3 py-2">
+              <dt className="text-[10px] font-medium uppercase tracking-[0.14em] text-[#5c5e62]">{fact.label}</dt>
+              <dd className="text-sm font-medium leading-snug [overflow-wrap:anywhere] text-[#171a20]">{fact.value}</dd>
+            </div>
+          ))}
+          <div className="col-span-2 min-w-0 rounded-xl bg-[#f4f4f4] px-3 py-2">
+            {vehicle.price != null ? (
+              <>
+                <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-[#5c5e62]">Price in Douala</p>
+                <p className="text-base font-semibold leading-snug">{formatFCFA(vehicle.price)}</p>
+              </>
+            ) : (
+              <p className="text-sm text-[#5c5e62]">Price on request</p>
+            )}
+          </div>
+        </dl>
+        <p className="mt-2 hidden text-sm text-[#393c41] sm:block">
           {[vehicle.engine, vehicle.fuelLabel, vehicle.transmission, vehicle.drive, vehicle.emission]
             .filter(Boolean)
             .join(" · ")}
         </p>
         {vehicle.price != null ? (
-          <>
-            <p className="mt-4 text-xs uppercase tracking-wide text-[#5c5e62]">Price in Douala</p>
+          <div className="mt-4 hidden sm:block">
+            <p className="text-xs uppercase tracking-wide text-[#5c5e62]">Price in Douala</p>
             <p className="text-xl font-semibold">{formatFCFA(vehicle.price)}</p>
-          </>
+          </div>
         ) : (
-          <p className="mt-4 text-sm text-[#5c5e62]">Price on request</p>
+          <p className="mt-4 hidden text-sm text-[#5c5e62] sm:block">Price on request</p>
         )}
         <Link
           href={`/quote?vehicle=${vehicle.slug}`}
-          className="mt-auto inline-flex h-9 w-fit items-center rounded-[4px] border border-[#171a20] px-4 text-sm font-medium hover:bg-[#171a20] hover:text-white"
+          className="mt-3 inline-flex h-10 w-full items-center justify-center rounded-[4px] border border-[#171a20] px-4 text-sm font-medium hover:bg-[#171a20] hover:text-white sm:mt-auto sm:h-9 sm:w-fit sm:justify-start"
         >
           {vehicle.inStock ? "Quote" : "Join the waitlist"}
         </Link>

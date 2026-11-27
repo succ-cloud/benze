@@ -78,7 +78,7 @@ export function HeroCarousel() {
 
   return (
     <section
-      className="relative h-svh min-h-[640px] w-full overflow-hidden bg-[#111]"
+      className="relative h-svh min-h-[520px] w-full overflow-hidden bg-[#111] sm:min-h-[640px]"
       aria-roledescription="carousel"
       aria-label="Featured Mercedes-Benz"
       onMouseEnter={() => {

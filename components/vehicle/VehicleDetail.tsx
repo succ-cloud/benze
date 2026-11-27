@@ -42,7 +42,7 @@ export function VehicleDetail({
 
   return (
     <article className="bg-white pt-14">
-      <section className="relative h-[72vh] min-h-[480px] bg-[#111]">
+      <section className="relative h-[58vh] min-h-[320px] bg-[#111] sm:h-[72vh] sm:min-h-[480px]">
         <div ref={photoRef} className="absolute inset-0">
           <Image
             src={image}
@@ -56,7 +56,7 @@ export function VehicleDetail({
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10" />
         <div className="absolute bottom-0 left-0 right-0 px-6 pb-10 text-white md:px-12">
           <p className="text-sm font-medium">{vehicle.tag}</p>
-          <h1 className="mt-2 text-4xl font-medium tracking-tight md:text-6xl">{vehicle.shortName}</h1>
+          <h1 className="mt-2 text-3xl font-medium tracking-tight sm:text-4xl md:text-6xl">{vehicle.shortName}</h1>
           {vehicle.price != null && (
             <p className="mt-2 text-lg underline underline-offset-4">{formatFromFCFA(vehicle.price)}</p>
           )}
@@ -94,7 +94,7 @@ export function VehicleDetail({
           {guide?.imageNote && (
             <p className="mt-4 max-w-2xl text-sm leading-6 text-[#5c5e62]">{guide.imageNote}</p>
           )}
-          <dl className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <dl className="mt-8 grid grid-cols-2 gap-2 sm:gap-3">
             {vehicle.specs.map((spec, specIndex) => (
               <div key={spec.label} style={{ ...tileStyle(specIndex), ...tileDelay(specIndex) }} className={`px-5 py-4 ${tileMotion}`}>
                 <dt className="text-[11px] font-medium uppercase tracking-[0.16em] text-tesla">{spec.label}</dt>

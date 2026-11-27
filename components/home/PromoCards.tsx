@@ -25,16 +25,16 @@ function PromoCard({ promo }: { promo: Promo }) {
   }
 
   return (
-    <article className="relative min-h-[300px] overflow-hidden rounded-2xl bg-[#f4f4f4] md:min-h-[320px]">
-      <div className="relative z-10 flex h-full max-w-[52%] flex-col justify-center p-8 md:p-12">
-        <h2 className="text-[28px] font-medium leading-tight tracking-tight">{promo.title}</h2>
+    <article className="grid overflow-hidden rounded-2xl bg-[#f4f4f4] md:relative md:block md:min-h-[320px]">
+      <div className="relative min-h-[200px] md:absolute md:bottom-6 md:right-6 md:top-6 md:w-[44%] md:min-h-0 md:overflow-hidden md:rounded-xl">
+        <Image src={promo.image} alt={promo.imageAlt} fill className="object-cover" sizes="(min-width: 768px) 30vw, 100vw" />
+      </div>
+      <div className="relative z-10 flex flex-col justify-center p-6 md:h-full md:max-w-[52%] md:p-12">
+        <h2 className="text-2xl font-medium leading-tight tracking-tight md:text-[28px]">{promo.title}</h2>
         <p className="mt-3 text-sm leading-6 text-[#393c41]">{promo.body}</p>
-        <ButtonLink href={promo.href} tone="light" className="mt-6 self-start">
+        <ButtonLink href={promo.href} tone="light" className="mt-6 w-full sm:w-auto sm:self-start">
           Learn More
         </ButtonLink>
-      </div>
-      <div className="absolute bottom-6 right-6 top-6 w-[44%] overflow-hidden rounded-xl">
-        <Image src={promo.image} alt={promo.imageAlt} fill className="object-cover" sizes="30vw" />
       </div>
     </article>
   );
