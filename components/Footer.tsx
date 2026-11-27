@@ -11,10 +11,10 @@ const links = [
 
 export function Footer() {
   return (
-    <footer className="bg-white px-6 py-8 text-center text-xs text-[#5c5e62]">
+    <footer className="bg-[#171a20] px-6 py-8 text-center text-xs text-white">
       <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
         {links.map((link) => (
-          <Link key={link.href} href={link.href} className="hover:text-[#171a20]">
+          <Link key={link.href} href={link.href} className="text-white/80 hover:text-white">
             {link.label}
           </Link>
         ))}

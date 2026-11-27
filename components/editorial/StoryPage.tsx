@@ -76,19 +76,16 @@ export function StoryPage({
             ))}
           </div>
           {facts.length > 0 && (
-            <dl
-              className="grid content-stretch gap-4 self-stretch sm:grid-cols-2 lg:col-span-7 lg:col-start-6 lg:row-start-2 lg:h-full lg:grid-cols-1"
-              style={{ gridTemplateRows: `repeat(${facts.length}, minmax(7.5rem, 1fr))` }}
-            >
+            <dl className="grid content-start gap-3 self-start sm:grid-cols-2 lg:col-span-7 lg:col-start-6 lg:row-start-2 lg:grid-cols-1">
               {facts.map((fact, factIndex) => (
                 <div
                   key={fact.label}
                   data-story-card
                   style={tileDelay(factIndex)}
-                  className="grid content-center gap-2 rounded-2xl border border-white bg-transparent px-8 py-8 tile-rise sm:grid-cols-[11rem_1fr] sm:items-center sm:gap-8"
+                  className="grid gap-1 rounded-2xl border border-white bg-transparent px-5 py-4 tile-rise sm:grid-cols-[9rem_1fr] sm:items-baseline sm:gap-6"
                 >
-                  <dt className="text-[13px] font-medium uppercase tracking-[0.16em] text-white">{fact.label}</dt>
-                  <dd className="text-xl font-medium leading-snug tracking-[-0.02em] text-white">{fact.value}</dd>
+                  <dt className="text-[11px] font-medium uppercase tracking-[0.16em] text-white">{fact.label}</dt>
+                  <dd className="text-[15px] font-medium leading-snug tracking-[-0.015em] text-white">{fact.value}</dd>
                 </div>
               ))}
             </dl>
